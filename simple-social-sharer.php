@@ -388,7 +388,3 @@ Puc_v4_Factory::buildUpdateChecker(
 	__FILE__,
 	'simple-social-sharer'
 );
-
-add_action('wp', function() {
-	dump(simple_social_sharer()->sharer->links());die;
-});
