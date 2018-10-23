@@ -71,6 +71,7 @@ class SSS_Sharer {
 	 */
 	public function hooks() {
 		add_action( 'init', [ $this, 'shortcode' ] );
+		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts_and_styles' ] );
 
 		add_filter( 'timber_context', [ $this, 'add_to_context' ] );
 	}
@@ -80,6 +81,52 @@ class SSS_Sharer {
 	 */
 	public function shortcode() {
 		add_shortcode( 'sharer', [ $this, 'display' ] );
+	}
+
+	/**
+	 * Enqueue scripts and styles.
+	 */
+	public function enqueue_scripts_and_styles() {
+		if ( is_admin() ) {
+			return;
+		}
+
+		wp_enqueue_script(
+			'tooltipster',
+			'https://cdn.jsdelivr.net/npm/tooltipster@4.2.6/dist/js/tooltipster.bundle.min.js',
+			[ 'jquery' ],
+			'4.2.6',
+			true
+		);
+
+		wp_enqueue_script(
+			'simple-social-sharer',
+			Simple_Social_Sharer::url( 'dist/js/app.js' ),
+			[ 'jquery', 'tooltipster' ],
+			substr( sha1( filemtime( Simple_Social_Sharer::dir( 'dist/js/app.js' ) ) ), 0, 8 ),
+			true
+		);
+
+		wp_enqueue_style(
+			'tooltipster',
+			'https://cdn.jsdelivr.net/npm/tooltipster@4.2.6/dist/css/tooltipster.bundle.min.css',
+			[],
+			'4.2.6'
+		);
+
+		wp_enqueue_style(
+			'tooltipster-theme-light',
+			'https://cdn.jsdelivr.net/npm/tooltipster@4.2.6/dist/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-light.min.css',
+			[ 'tooltipster' ],
+			'4.2.6'
+		);
+
+		wp_enqueue_style(
+			'simple-social-sharer',
+			Simple_Social_Sharer::url( 'dist/css/app.css' ),
+			[ 'tooltipster' ],
+			substr( sha1( filemtime( Simple_Social_Sharer::dir( 'dist/css/app.css' ) ) ), 0, 8 )
+		);
 	}
 
 	/**
@@ -289,7 +336,8 @@ class SSS_Sharer {
 
 		return $template->render(
 			[
-				'links' => $this->links( $atts['post_id'] ),
+				'links'           => $this->links( $atts['post_id'] ),
+				'tooltip_content' => __( 'Copied!', 'simple-social-sharer' ),
 			]
 		);
 	}

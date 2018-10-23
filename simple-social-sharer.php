@@ -410,7 +410,3 @@ Puc_v4_Factory::buildUpdateChecker(
 	__FILE__,
 	'simple-social-sharer'
 );
-
-add_action('wp', function() {
-	simple_social_sharer()->render(['post_id' => 223 ]);die;
-});
