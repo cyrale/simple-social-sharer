@@ -59,6 +59,8 @@ class SSS_Sharer {
 			$args = $this->current_args();
 		}
 
+		$args = apply_filters( 'sss_links_args', $args, $post_id );
+
 		return $this->share_links( $args );
 	}
 
@@ -81,7 +83,7 @@ class SSS_Sharer {
 			];
 		}
 
-		return $links;
+		return apply_filters( 'sss_share_links', $links, $args );
 	}
 
 	/**
