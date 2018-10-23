@@ -362,6 +362,28 @@ final class Simple_Social_Sharer {
 		$url = $url ? $url : trailingslashit( plugin_dir_url( __FILE__ ) );
 		return $url . $path;
 	}
+
+	/**
+	 * Render sharer.
+	 *
+	 * @param array $atts Attributes.
+	 * @param bool  $echo echo HTML if true, return it otherwise.
+	 *
+	 * @return string The rendered HTML.
+	 *
+	 * @throws Twig_Error_Loader Twig error.
+	 * @throws Twig_Error_Runtime Twig error.
+	 * @throws Twig_Error_Syntax Twig error.
+	 */
+	public function render( $atts = [], $echo = true ) {
+		$render = $this->sharer->render( $atts, $echo );
+
+		if ( empty( $echo ) ) {
+			return $render;
+		}
+
+		echo $render;
+	}
 }
 
 /**
@@ -388,3 +410,7 @@ Puc_v4_Factory::buildUpdateChecker(
 	__FILE__,
 	'simple-social-sharer'
 );
+
+add_action('wp', function() {
+	simple_social_sharer()->render(['post_id' => 223 ]);die;
+});

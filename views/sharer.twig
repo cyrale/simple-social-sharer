@@ -1,0 +1,9 @@
+<ul class="simple-social-sharer">
+    {% for link in links %}
+        <li class="simple-social-sharer__item">
+            <a href="{{ link.url }}" rel="noopener noreferrer" target="_blank" class="simple-social-sharer__link {{ link.slug }}">
+                <span>{{ link.name }}</span>
+            </a>
+        </li>
+    {% endfor %}
+</ul>

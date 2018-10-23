@@ -21,15 +21,47 @@ class SSS_Sharer {
 	protected $plugin = null;
 
 	/**
+	 * Twig loader.
+	 *
+	 * @var Twig_Loader_Filesystem
+	 */
+	protected $loader;
+
+	/**
+	 * Twig.
+	 *
+	 * @var Twig_Environment
+	 */
+	protected $twig;
+
+	/**
 	 * Constructor.
 	 *
-	 * @since  1.0.0
+	 * @since 1.0.0
 	 *
-	 * @param  Simple_Social_Sharer $plugin Main plugin object.
+	 * @param Simple_Social_Sharer $plugin Main plugin object.
+	 *
+	 * @throws Twig_Error_Loader Twig error.
 	 */
 	public function __construct( $plugin ) {
 		$this->plugin = $plugin;
 		$this->hooks();
+
+		$this->loader = new Twig_Loader_Filesystem();
+
+		$locations = apply_filters( 'simple_social_sharer_views_path', [ Simple_Social_Sharer::dir( 'views' ) ] );
+		if ( is_array( $locations ) && ! empty( $locations ) ) {
+			foreach ( $locations as $location ) {
+				if ( ! is_string( $location ) ) {
+					continue;
+				}
+
+				$this->loader->addPath( $location );
+			}
+		}
+
+		$this->twig = new Twig_Environment( $this->loader );
+		$this->twig->addExtension( new Twig_Extension_StringLoader() );
 	}
 
 	/**
@@ -38,6 +70,14 @@ class SSS_Sharer {
 	 * @since  1.0.0
 	 */
 	public function hooks() {
+		add_action( 'init', [ $this, 'shortcode' ] );
+	}
+
+	/**
+	 * Declare shortcode.
+	 */
+	public function shortcode() {
+		add_shortcode( 'sharer', [ $this, 'display' ] );
 	}
 
 	/**
@@ -59,7 +99,7 @@ class SSS_Sharer {
 			$args = $this->current_args();
 		}
 
-		$args = apply_filters( 'sss_links_args', $args, $post_id );
+		$args = apply_filters( 'simple_social_sharer_links_args', $args, $post_id );
 
 		return $this->share_links( $args );
 	}
@@ -77,13 +117,13 @@ class SSS_Sharer {
 			$network = new $network_class();
 
 			$links[ $network->slug ] = [
-				'url'  => $network->get_share_url( $args ),
+				'url'  => $network->share_url( $args ),
 				'name' => $network->name,
 				'slug' => $network->slug,
 			];
 		}
 
-		return apply_filters( 'sss_share_links', $links, $args );
+		return apply_filters( 'simple_social_sharer_share_links', $links, $args );
 	}
 
 	/**
@@ -160,7 +200,7 @@ class SSS_Sharer {
 			];
 		}
 
-		if ( apply_filters( 'sss_apply_get_parameters', true ) ) {
+		if ( apply_filters( 'simple_social_sharer_apply_get_parameters', true ) ) {
 			// phpcs:disable WordPress.Security.NonceVerification.NoNonceVerification
 			$args['url'] = add_query_arg( rawurlencode_deep( $_GET ), $args['url'] );
 			// phpcs:enable
@@ -189,7 +229,7 @@ class SSS_Sharer {
 	 */
 	private function social_networks() {
 		return apply_filters(
-			'sss_social_networks',
+			'simple_social_sharer_social_networks',
 			[
 				'facebook'   => 'SSS_Networks_Facebook',
 				'twitter'    => 'SSS_Networks_Twitter',
@@ -200,5 +240,48 @@ class SSS_Sharer {
 				'link'       => 'SSS_Networks_Link',
 			]
 		);
+	}
+
+	/**
+	 * Render the sharer.
+	 *
+	 * @param array $atts Attributes.
+	 *
+	 * @return string
+	 *
+	 * @throws Twig_Error_Loader Twig error.
+	 * @throws Twig_Error_Runtime Twig error.
+	 * @throws Twig_Error_Syntax Twig error.
+	 */
+	public function render( $atts = [] ) {
+		$atts = shortcode_atts(
+			[
+				'post_id' => null,
+			],
+			$atts
+		);
+
+		$template = $this->twig->load( 'sharer.twig' );
+
+		return $template->render(
+			[
+				'links' => $this->links( $atts['post_id'] ),
+			]
+		);
+	}
+
+	/**
+	 * Display the rendered HTML.
+	 *
+	 * @param array $attr Attributes.
+	 *
+	 * @throws Twig_Error_Loader Twig error.
+	 * @throws Twig_Error_Runtime Twig error.
+	 * @throws Twig_Error_Syntax Twig error.
+	 */
+	public function display( $attr = [] ) {
+		// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo $this->render( $attr );
+		// phpcs:enable
 	}
 }
