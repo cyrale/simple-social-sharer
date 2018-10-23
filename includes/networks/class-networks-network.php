@@ -13,10 +13,19 @@
  */
 abstract class SSS_Networks_Network {
 
+	/**
+	 * The name of the social network.
+	 *
+	 * @var string
+	 */
 	protected $name;
-	protected $slug;
 
-	abstract public function get_share_url( $args );
+	/**
+	 * The slug of the social network.
+	 *
+	 * @var string
+	 */
+	protected $slug;
 
 	/**
 	 * Magic getter for our object.
@@ -37,6 +46,13 @@ abstract class SSS_Networks_Network {
 		}
 	}
 
+	/**
+	 * Parse args to get default values.
+	 *
+	 * @param array $args Arguments (url, title, excerpt and thumbnail).
+	 *
+	 * @return array Arguments parsed.
+	 */
 	protected function parse_args( $args ) {
 		$defaults = [
 			'url'       => '',
@@ -47,4 +63,13 @@ abstract class SSS_Networks_Network {
 
 		return wp_parse_args( $args, $defaults );
 	}
+
+	/**
+	 * Get share URL for a network.
+	 *
+	 * @param array $args Arguments (url, title, excerpt and thumbnail).
+	 *
+	 * @return string Share url.
+	 */
+	abstract public function share_url( $args );
 }

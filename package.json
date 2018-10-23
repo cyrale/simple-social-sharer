@@ -14,9 +14,13 @@
   },
   "license": "GPL-2.0+",
   "scripts": {
-    "precommit": "npx lint-staged && npm run build",
     "build": "npx webpack --mode production",
     "dev": "npx webpack --watch --progress --mode development"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npx lint-staged && npm run build"
+    }
   },
   "lint-staged": {
     "src/**/*.js": [

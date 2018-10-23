@@ -55,7 +55,7 @@ function simple_social_sharer_autoload_classes( $class_name ) {
 	$filename = strtolower( str_replace( '_', '-', substr( $class_name, strlen( 'SSS_' ) ) ) );
 
 	// Include our file.
-	if ( 0 !== strpos( $class_name, 'SSS_Networks_' ) ) {
+	if ( 0 === strpos( $class_name, 'SSS_Networks_' ) ) {
 		Simple_Social_Sharer::include_file( 'includes/networks/class-' . $filename );
 	} else {
 		Simple_Social_Sharer::include_file( 'includes/class-' . $filename );
@@ -388,3 +388,7 @@ Puc_v4_Factory::buildUpdateChecker(
 	__FILE__,
 	'simple-social-sharer'
 );
+
+add_action('wp', function() {
+	dump(simple_social_sharer()->sharer->links());die;
+});

@@ -13,12 +13,22 @@
  */
 class SSS_Networks_Email extends SSS_Networks_Network {
 
+	/**
+	 * SSS_Networks_Email constructor.
+	 */
 	public function __construct() {
 		$this->name = 'Email';
 		$this->slug = 'mail';
 	}
 
-	public function get_share_url( $args ) {
+	/**
+	 * Get share URL for emails.
+	 *
+	 * @param array $args Arguments (url, title, excerpt and thumbnail).
+	 *
+	 * @return string Share url.
+	 */
+	public function share_url( $args ) {
 		$args = $this->parse_args( $args );
 
 		return 'mailto:?Body=' . rawurlencode( $args['url'] );

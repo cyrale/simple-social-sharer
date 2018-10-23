@@ -28,7 +28,6 @@ module.exports = ( env, options ) => {
 		devtool: 'source-map',
 		context: path.resolve( __dirname ),
 		entry: {
-			admin: './src/admin.js',
 			app: './src/app.js',
 		},
 		optimization: optimization,

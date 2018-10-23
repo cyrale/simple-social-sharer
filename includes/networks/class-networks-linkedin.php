@@ -13,21 +13,36 @@
  */
 class SSS_Networks_LinkedIn extends SSS_Networks_Network {
 
+	/**
+	 * SSS_Networks_LinkedIn constructor.
+	 */
 	public function __construct() {
 		$this->name = 'LinkedIn';
 		$this->slug = 'linkedin';
 	}
 
-	public function get_share_url( $args ) {
+	/**
+	 * Get share URL for LinkedIn.
+	 *
+	 * @param array $args Arguments (url, title, excerpt and thumbnail).
+	 *
+	 * @return string Share url.
+	 */
+	public function share_url( $args ) {
 		$args = $this->parse_args( $args );
 
 		$url = 'https://www.linkedin.com/shareArticle';
-		$url = add_query_arg( rawurlencode_deep( [
-			'mini'    => true,
-			'url'     => $args['url'],
-			'title'   => $args['title'],
-			'summary' => $args['excerpt'],
-		] ), $url );
+		$url = add_query_arg(
+			rawurlencode_deep(
+				[
+					'mini'    => 'true',
+					'url'     => $args['url'],
+					'title'   => $args['title'],
+					'summary' => $args['excerpt'],
+				]
+			),
+			$url
+		);
 
 		return $url;
 	}
