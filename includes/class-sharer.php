@@ -71,6 +71,8 @@ class SSS_Sharer {
 	 */
 	public function hooks() {
 		add_action( 'init', [ $this, 'shortcode' ] );
+
+		add_filter( 'timber_context', [ $this, 'add_to_context' ] );
 	}
 
 	/**
@@ -78,6 +80,28 @@ class SSS_Sharer {
 	 */
 	public function shortcode() {
 		add_shortcode( 'sharer', [ $this, 'display' ] );
+	}
+
+	/**
+	 * Add sharer to the context of Timber.
+	 *
+	 * @param array $context Context.
+	 *
+	 * @return array New context with sharer inside.
+	 *
+	 * @throws Twig_Error_Loader Twig error.
+	 * @throws Twig_Error_Runtime Twig error.
+	 * @throws Twig_Error_Syntax Twig error.
+	 */
+	public function add_to_context( $context ) {
+		if ( apply_filters( 'simple_social_sharer_add_to_context', true ) ) {
+			$context['simple_social_sharer'] = [
+				'links'  => $this->links(),
+				'render' => $this->render(),
+			];
+		}
+
+		return $context;
 	}
 
 	/**
