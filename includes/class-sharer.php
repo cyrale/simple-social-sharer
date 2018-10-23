@@ -60,7 +60,7 @@ class SSS_Sharer {
 			}
 		}
 
-		$this->twig = new Twig_Environment( $this->loader );
+		$this->twig = new Twig_Environment( $this->loader, [ 'autoescape' => false ] );
 		$this->twig->addExtension( new Twig_Extension_StringLoader() );
 	}
 
@@ -191,6 +191,7 @@ class SSS_Sharer {
 				'url'  => $network->share_url( $args ),
 				'name' => $network->name,
 				'slug' => $network->slug,
+				'icon' => $network->icon,
 			];
 		}
 
@@ -302,13 +303,13 @@ class SSS_Sharer {
 		return apply_filters(
 			'simple_social_sharer_social_networks',
 			[
-				'facebook'   => 'SSS_Networks_Facebook',
-				'twitter'    => 'SSS_Networks_Twitter',
-				'googleplus' => 'SSS_Networks_GooglePlus',
-				'linkedin'   => 'SSS_Networks_LinkedIn',
-				'pinterest'  => 'SSS_Networks_Pinterest',
-				'email'      => 'SSS_Networks_Email',
-				'link'       => 'SSS_Networks_Link',
+				'facebook'    => 'SSS_Networks_Facebook',
+				'twitter'     => 'SSS_Networks_Twitter',
+				'google-plus' => 'SSS_Networks_GooglePlus',
+				'linkedin'    => 'SSS_Networks_LinkedIn',
+				'pinterest'   => 'SSS_Networks_Pinterest',
+				'email'       => 'SSS_Networks_Email',
+				'link'        => 'SSS_Networks_Link',
 			]
 		);
 	}

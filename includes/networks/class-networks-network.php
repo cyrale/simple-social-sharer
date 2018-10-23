@@ -28,6 +28,13 @@ abstract class SSS_Networks_Network {
 	protected $slug;
 
 	/**
+	 * The icon (SVG).
+	 *
+	 * @var string
+	 */
+	protected $icon;
+
+	/**
 	 * Magic getter for our object.
 	 *
 	 * @since  1.0.0
@@ -40,6 +47,7 @@ abstract class SSS_Networks_Network {
 		switch ( $field ) {
 			case 'name':
 			case 'slug':
+			case 'icon':
 				return $this->$field;
 			default:
 				throw new Exception( 'Invalid ' . __CLASS__ . ' property: ' . $field );

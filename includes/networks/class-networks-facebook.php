@@ -19,6 +19,8 @@ class SSS_Networks_Facebook extends SSS_Networks_Network {
 	public function __construct() {
 		$this->name = 'Facebook';
 		$this->slug = 'facebook';
+
+		$this->icon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><path d="M367.53 193.67v137.68H266.66V499.7h100.87V1000h207.21V499.72h139s13-80.73 19.34-169H575.52v-115.1c0-17.21 22.59-40.35 44.92-40.35h112.9V0h-153.5C362.41 0 367.53 168.51 367.53 193.67z"/></svg>';
 	}
 
 	/**

@@ -10,6 +10,7 @@
           data-clipboard-text="{{ link.url }}"
           data-tooltip-content="{{ tooltip_content }}"
         >
+          {{ link.icon }}
           <span>{{ link.name }}</span>
         </a>
       {% else %}
@@ -19,6 +20,7 @@
           target="_blank"
           class="simple-social-sharer__link {{ link.slug }}"
         >
+          {{ link.icon }}
           <span>{{ link.name }}</span>
         </a>
       {% endif %}
