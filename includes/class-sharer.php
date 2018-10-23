@@ -41,12 +41,26 @@ class SSS_Sharer {
 	}
 
 	public function links( $post_id = null ) {
+		$args = [];
+
 		if ( ! empty( $post_id ) ) {
-			$url = get_permalink( $post_id );
+			$args['url'] = get_permalink( $post_id );
 		} else {
-			$url = $this->current_url();
+			$args['url'] = $this->current_url();
 		}
 
+		$links = [];
+		foreach ( $this->social_networks() as $network_slug => $network_class ) {
+			$network = new $network_class();
+
+			$links[ $network->slug ] = [
+				'url'  => $network->get_share_url( $args ),
+				'name' => $network->name,
+				'slug' => $network->slug,
+			];
+		}
+
+		return $links;
 	}
 
 	private function current_url() {
@@ -59,5 +73,17 @@ class SSS_Sharer {
 		}
 
 		return $current_url;
+	}
+
+	private function social_networks() {
+		return apply_filters( 'sss_social_networks', [
+			'facebook'   => 'SSS_Networks_Facebook',
+			'twitter'    => 'SSS_Networks_Twitter',
+			'googleplus' => 'SSS_Networks_GooglePlus',
+			'linkedin'   => 'SSS_Networks_LinkedIn',
+			'pinterest'  => 'SSS_Networks_Pinterest',
+			'email'      => 'SSS_Networks_Email',
+			'link'       => 'SSS_Networks_Link',
+		] );
 	}
 }
