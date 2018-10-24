@@ -1,29 +1,19 @@
 <ul class="simple-social-sharer">
   {% for link in links %}
     <li class="simple-social-sharer__item">
-      {% if link.slug == 'link' %}
-        <a
-          href="{{ link.url }}"
-          rel="noopener noreferrer"
-          target="_blank"
-          class="simple-social-sharer__link {{ link.slug }}"
+      <a
+        href="{{ link.url }}"
+        rel="noopener noreferrer"
+        target="_blank"
+        class="simple-social-sharer__link {{ link.slug }}"
+        title="{{ link.name }}"
+        {% if link.slug == 'link' %}
           data-clipboard-text="{{ link.url }}"
           data-tooltip-content="{{ tooltip_content }}"
-        >
-          {{ link.icon }}
-          <span>{{ link.name }}</span>
-        </a>
-      {% else %}
-        <a
-          href="{{ link.url }}"
-          rel="noopener noreferrer"
-          target="_blank"
-          class="simple-social-sharer__link {{ link.slug }}"
-        >
-          {{ link.icon }}
-          <span>{{ link.name }}</span>
-        </a>
-      {% endif %}
+        {% endif %}
+      >
+        {{ link.icon }}
+      </a>
     </li>
   {% endfor %}
 </ul>

@@ -1,14 +1,14 @@
 {
-    "name": "cyrale/partners-banner",
-    "version": "1.0.2",
-    "description": "Display a banner of your partners.",
+    "name": "cyrale/simple-social-sharer",
+    "version": "1.0.0",
+    "description": "A simple social sharer.",
     "keywords": [
         "wordpress",
         "wordpress-plugin",
         "partner",
         "banner"
     ],
-    "homepage": "https://github.com/cyrale/partners-banner",
+    "homepage": "https://github.com/cyrale/simple-social-sharer",
     "license": "GPL+2.0",
     "authors": [
         {
@@ -17,8 +17,8 @@
         }
     ],
     "support"    : {
-        "issues": "https://github.com/cyrale/partners-banner/issues",
-        "source": "https://github.com/cyrale/partners-banner"
+        "issues": "https://github.com/cyrale/simple-social-sharer/issues",
+        "source": "https://github.com/cyrale/simple-social-sharer"
     },
     "type": "wordpress-plugin",
     "require": {
